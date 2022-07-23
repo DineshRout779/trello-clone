@@ -7,7 +7,7 @@ const TodoSchema = new mongoose.Schema(
       maxlength: 100,
       required: true,
     },
-    userId: {
+    author: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true,
@@ -16,6 +16,11 @@ const TodoSchema = new mongoose.Schema(
       type: String,
       maxlength: 1000,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ['todo', 'progress', 'completed'],
+      default: 'todo',
     },
   },
   { timestamps: true }

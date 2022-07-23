@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-// const userRoute = require('./routes/users');
-// const authRoute = require('./routes/auth');
-// const postRoute = require('./routes/posts');
+const userRoute = require('./routes/user');
+const authRoute = require('./routes/auth');
+const todoRoute = require('./routes/todo');
 
 const app = express();
 
@@ -30,7 +30,9 @@ mongoose
   });
 
 // routes setup
-app.get('/', (req, res) => res.send('Hello to todo api!'));
+app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
+app.use('/api/todos', todoRoute);
 
 const server = app.listen(port, () => {
   console.log(`server running on http://localhost:${port}`);

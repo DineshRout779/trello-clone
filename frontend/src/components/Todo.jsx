@@ -1,15 +1,35 @@
-const Todo = ({ todo }) => {
+import { useDispatch } from 'react-redux';
+import { showTodo } from '../features/todo/todoSlice';
+import { Draggable } from 'react-beautiful-dnd';
+
+const Todo = ({ todo, index }) => {
+  // const { showDetailed } = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
   return (
-    <div className='todo'>
-      <h4 className='todo-title'>{todo.title}</h4>
-      <p className='todo-desc'>{todo.description}</p>
+    <Draggable draggableId={todo._id.toString()} index={index}>
+      {(provided) => {
+        return (
+          <div
+            className='todo'
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <h4
+              className='todo-title'
+              onClick={() => dispatch(showTodo(todo._id))}
+            >
+              {todo.title}
+            </h4>
+            <p className='todo-desc'>{todo.description}</p>
 
-      <div className='todo-img mt-1'>
-        <img src='./images/avatar-1.png' alt='' />
-      </div>
-
-      {/* <button className='btn todo-btn mt-1 mb-1'>+</button> */}
-    </div>
+            <div className='todo-img mt-1'>
+              <img src='./images/avatar-1.png' alt='' />
+            </div>
+          </div>
+        );
+      }}
+    </Draggable>
   );
 };
 export default Todo;

@@ -18,6 +18,12 @@ const userSlice = createSlice({
       state.userInfo = null;
       state.error = null;
     },
+    resetError: (state) => {
+      state.error = null;
+    },
+    resetSuccess: (state) => {
+      state.success = false;
+    },
   },
   extraReducers: {
     //signup
@@ -28,7 +34,7 @@ const userSlice = createSlice({
     [signUp.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true; // registration successful
-      console.log(payload);
+      if (payload.data.user) state.userInfo = payload.data.user;
     },
     [signUp.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -51,6 +57,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, resetError, resetSuccess } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       maxlength: 1000,
     },
+    picture: {
+      type: String,
+      default: './images/default.png',
+    },
   },
   { timestamps: true }
 );

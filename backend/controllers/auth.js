@@ -1,4 +1,4 @@
-import User from '../models/User';
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -7,14 +7,14 @@ exports.signup = async (req, res) => {
 
   if (!fullName || !email || !password) {
     return res.status(400).json({
-      error: 'Please provide username, email and password!',
+      message: 'Please provide username, email and password!',
     });
   }
 
   const user = await User.findOne({ email });
   if (user)
     return res.status(403).json({
-      error: 'User already exists',
+      message: 'User already exists',
     });
 
   const salt = await bcrypt.genSalt(10);
@@ -47,7 +47,7 @@ exports.signup = async (req, res) => {
     return res.status(201).json('User signed up successfully!');
   } catch (error) {
     return res.status(500).json({
-      error: error.message,
+      message: error.message,
     });
   }
 };
@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
 
   if (!email || !clientPassword) {
     return res.status(400).json({
-      error: 'Please provide email and password!',
+      message: 'Please provide email and password!',
     });
   }
   try {
@@ -65,14 +65,14 @@ exports.login = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        error: 'User not registered!',
+        message: 'User not registered!',
       });
     }
 
     const validPassword = await bcrypt.compare(clientPassword, user.password);
     if (!validPassword) {
       return res.status(403).json({
-        error: 'Invalid credentials!',
+        message: 'Invalid credentials!',
       });
     }
 
@@ -91,9 +91,8 @@ exports.login = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
-      err: err.message,
+      message: err.message,
     });
   }
 };

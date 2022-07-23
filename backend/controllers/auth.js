@@ -39,6 +39,7 @@ exports.signup = async (req, res) => {
           _id: others._id,
           username: others.username,
           email: others.email,
+          fullName: others.fullName,
           token,
         },
       });
@@ -87,6 +88,7 @@ exports.login = async (req, res) => {
         _id: others._id,
         username: others.username,
         email: others.email,
+        fullName: others.fullName,
         token,
       },
     });

@@ -2,7 +2,7 @@ import User from '../models/User';
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-export const signup = async (req, res) => {
+exports.signup = async (req, res) => {
   const { fullName, email, password, remember } = req.body;
 
   if (!fullName || !email || !password) {
@@ -52,7 +52,7 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+exports.login = async (req, res) => {
   const { email, password: clientPassword } = req.body;
 
   if (!email || !clientPassword) {

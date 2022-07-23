@@ -26,10 +26,15 @@ input,
 button {
   font-family: inherit;
   font-size: 16px;
+  display: block;
+  width: 100%;
 }
 
-input[type='checkbox'] {
+input[type='checkbox'],
+#remember {
   accent-color: var(--accent-color);
+  display: inline !important;
+  width: fit-content;
 }
 
 .container {
@@ -46,8 +51,8 @@ img {
 .header {
   position: sticky;
   top: 0;
+  z-index: 100;
   background-color: #fff;
-  padding: 0.5em 0;
 }
 
 .modal-container {
@@ -201,8 +206,49 @@ img {
 }
 
 .todo-form .form-control {
-  border: none;
-  outline: none;
+  /* border: none;
+  outline: none; */
+}
+
+.todo-form .textarea {
+  resize: vertical;
+}
+
+.todo-container {
+  min-height: 65vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.todo-update-container {
+  padding: 1em;
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -4px 6px 17px rgba(216, 216, 216, 0.59);
+  transition: right 0.3s ease-in;
+}
+
+.todo-update-container h2 {
+  font-weight: 500;
+  position: relative;
+}
+
+.todo-update-container h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 16px;
+  height: 2px;
+  background-color: #333;
+}
+
+.todo-update-container.active {
+  right: 0;
 }
 
 /* todo */
@@ -449,6 +495,7 @@ nav a svg,
 .btn-group {
   margin: 1em 0;
 }
+
 .btn {
   text-decoration: none;
   padding: 0.5em 2em;
@@ -459,9 +506,17 @@ nav a svg,
   cursor: pointer;
 }
 
+.btn:hover {
+  background-color: #197a69;
+}
+
 .btn-rev {
   background-color: #fff;
   color: var(--accent-color);
+}
+
+.btn-rev:hover {
+  color: white;
 }
 
 .btn-link {
@@ -490,6 +545,11 @@ nav a svg,
   border: none;
   outline: none;
   width: fit-content;
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  border: 1px solid;
 }
 
 .border {

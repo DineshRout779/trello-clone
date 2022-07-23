@@ -42,16 +42,19 @@ exports.updateTodo = async (req, res) => {
       {
         new: true,
       }
-    );
+    ).populate('author', '_id fullName email');
+
     return res.status(200).json(updatedTodo);
   } catch (error) {
     return res.status(500).json(error);
   }
 };
 
-exports.getALlTodos = async (req, res) => {
+exports.getAllTodos = async (req, res) => {
   try {
-    const todos = await Todo.find().populate('author', '_id fullName email');
+    const todos = await Todo.find()
+      .populate('author', '_id fullName email')
+      .sort('-createdAt');
 
     if (!todos) return res.status(404).json('No todo found!');
     return res.status(200).json(todos);

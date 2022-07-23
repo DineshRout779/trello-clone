@@ -1,12 +1,20 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { login } from '../features/user/userActions';
 
 const Login = () => {
   const [user, setUser] = useState({
     email: '',
-    pasword: '',
+    password: '',
+    remember: false,
   });
-  const [remember, setRemember] = useState(false);
+  const { loading, error, success, userInfo } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setUser({
@@ -15,9 +23,26 @@ const Login = () => {
     });
   };
 
-  const handleCheck = () => {
-    setRemember(!remember);
+  const submitForm = async (e) => {
+    e.preventDefault();
+
+    if (user.email && user.password) {
+      dispatch(login(user));
+    }
   };
+
+  useEffect(() => {
+    // redirect straight to dashboard if user exists!
+    if (userInfo) navigate('/dashboard');
+
+    if (success) {
+      setUser({
+        email: '',
+        password: '',
+      });
+      navigate('/dashboard');
+    }
+  }, [navigate, userInfo, success, user.remember]);
 
   return (
     <div className='full-height flex-center'>
@@ -26,7 +51,7 @@ const Login = () => {
           <img src='./images/todo.png' alt='todo app' />
         </div>
         <div className='login-form'>
-          <div className='flex'>
+          <div className='flex pb-1'>
             <NavLink
               to='/login'
               className={({ isActive }) => (isActive ? 'active' : undefined)}
@@ -41,7 +66,14 @@ const Login = () => {
             </NavLink>
           </div>
 
-          <form className='form'>
+          <div className='line'></div>
+
+          <div style={{ margin: '1em auto', maxWidth: '360px' }}>
+            <h3 style={{ fontWeight: 500, fontSize: '18px' }}>To Continue</h3>
+            <p>We need your Name & Email </p>
+          </div>
+
+          <form className='form' onSubmit={submitForm}>
             <input
               type='email'
               name='email'
@@ -67,10 +99,15 @@ const Login = () => {
 
             <input
               type='checkbox'
-              checked={remember}
+              checked={user.remember}
               name='remember'
               id='remember'
-              onChange={handleCheck}
+              onChange={() =>
+                setUser({
+                  ...user,
+                  remember: !user.remember,
+                })
+              }
             />
             <label
               style={{ marginLeft: '8px', userSelect: 'none' }}

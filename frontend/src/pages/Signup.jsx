@@ -1,13 +1,21 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUp } from '../features/user/userActions';
 
 const Signup = () => {
   const [user, setUser] = useState({
-    name: '',
+    fullName: '',
     email: '',
-    pasword: '',
+    password: '',
+    remember: false,
   });
-  const [remember, setRemember] = useState(false);
+  const { loading, error, success, userInfo } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setUser({
@@ -16,9 +24,29 @@ const Signup = () => {
     });
   };
 
-  const handleCheck = () => {
-    setRemember(!remember);
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    if (user.email && user.fullName && user.password) {
+      dispatch(signUp(user));
+    }
   };
+
+  useEffect(() => {
+    // redirect straight to dashboard if user exists!
+    if (userInfo) navigate('/dashboard');
+
+    if (success) {
+      setUser({
+        fullName: '',
+        email: '',
+        password: '',
+      });
+      navigate('/login');
+    }
+
+    if (success && userInfo && user.remember) navigate('/dashboard');
+  }, [navigate, userInfo, success, user.remember]);
 
   return (
     <div className='full-height flex-center'>
@@ -27,7 +55,7 @@ const Signup = () => {
           <img src='./images/todo.png' alt='todo app' />
         </div>
         <div className='login-form'>
-          <div className='flex'>
+          <div className='flex pb-1'>
             <NavLink
               to='/login'
               className={({ isActive }) => (isActive ? 'active' : undefined)}
@@ -42,13 +70,19 @@ const Signup = () => {
             </NavLink>
           </div>
 
-          <form className='form'>
+          <div className='line'></div>
+
+          <div className='mt-1' style={{ color: 'red', textAlign: 'center' }}>
+            {error}
+          </div>
+
+          <form className='form' onSubmit={submitForm}>
             <input
               type='name'
-              name='name'
-              id='name'
+              name='fullName'
+              id='fullName'
               className='form-control'
-              value={user.name}
+              value={user.fullName}
               onChange={handleInputChange}
               placeholder='Full name'
             />
@@ -72,15 +106,20 @@ const Signup = () => {
             />
 
             <button type='submit' className='form-control btn btn-submit'>
-              Sign up
+              {loading ? 'Signing up...' : 'Sign up'}
             </button>
 
             <input
               type='checkbox'
-              checked={remember}
+              checked={user.remember}
               name='remember'
               id='remember'
-              onChange={handleCheck}
+              onChange={() =>
+                setUser({
+                  ...user,
+                  remember: !user.remember,
+                })
+              }
             />
             <label
               style={{ marginLeft: '8px', userSelect: 'none' }}

@@ -7,9 +7,20 @@ import {
   IoSettingsOutline,
 } from 'react-icons/io5';
 import { BsCalendarDate } from 'react-icons/bs';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/user/userSlice';
 
 const Sidebar = () => {
+  // const { userInfo, userToken } = useSelector((state) => state.user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   let activeClassName = 'active';
   return (
     <div className='sidebar'>
@@ -84,7 +95,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <button className='btn-link'>
+            <button className='btn-link' onClick={handleLogout}>
               <MdLogout /> Logout
             </button>
           </li>

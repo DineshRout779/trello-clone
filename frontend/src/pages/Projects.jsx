@@ -1,42 +1,65 @@
 import Header from '../components/Header';
 import TodoList from '../components/TodoList';
 import { BsFilter } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchAllTodos, updateTodo } from '../features/todo/todoActions';
 
-const todos = [
-  {
-    id: 1,
-    title: 'Design- App',
-    description:
-      'Modifying Career, Scholarship and Entrance exam screen Acc to new design pattern ',
-    userId: 1,
-    status: 'todo',
-  },
-  {
-    id: 2,
-    title: 'Prototyping',
-    description: 'Account -> Profile Section',
-    userId: 2,
-    status: 'todo',
-  },
-  {
-    id: 3,
-    title: 'Frontend',
-    description:
-      'As a Content Annotator, I should be able add tags in colleges, So that colleges can improve',
-    userId: 3,
-    status: 'progress',
-  },
-  {
-    id: 4,
-    title: 'Backend',
-    description:
-      'Create API for search colleges ,exams, scholarships, career_pathways',
-    userId: 1,
-    status: 'progress',
-  },
-];
+import { DragDropContext } from 'react-beautiful-dnd';
+import TodoDetailed from '../components/TodoDetailed';
 
 const Projects = () => {
+  const { userInfo } = useSelector((state) => state.user);
+  const { todos } = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+
+  let add,
+    todo = todos.filter((todo) => todo.status === 'todo'),
+    progress = todos.filter((todo) => todo.status === 'progress'),
+    completed = todos.filter((todo) => todo.status === 'completed');
+
+  useEffect(() => {
+    dispatch(fetchAllTodos());
+  }, [dispatch]);
+
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+    if (!destination) return;
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
+
+    if (source.droppableId === 'todo') {
+      add = todo[source.index];
+      todo.splice(source.index, 1);
+    } else if (source.droppableId === 'progress') {
+      add = progress[source.index];
+      progress.splice(source.index, 1);
+    } else {
+      add = completed[source.index];
+      completed.splice(source.index, 1);
+    }
+
+    // update
+    dispatch(
+      updateTodo({
+        todo: { ...add, status: destination.droppableId },
+        userInfo,
+      })
+    );
+
+    if (destination.droppableId === 'todo') {
+      todo.splice(destination.index, 0, add);
+    } else if (destination.droppableId === 'progress') {
+      progress.splice(destination.index, 0, add);
+    } else {
+      completed.splice(destination.index, 0, add);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -46,21 +69,17 @@ const Projects = () => {
           <BsFilter /> Filter
         </p>
       </div>
-      <div className='grid-3'>
-        <TodoList
-          title='To do'
-          list={todos.filter((todo) => todo.status === 'todo')}
-        />
-        <TodoList
-          title='In progress'
-          list={todos.filter((todo) => todo.status === 'progress')}
-        />
-        <TodoList
-          title='Completed'
-          list={todos.filter((todo) => todo.status === 'completed')}
-        />
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className='grid-3 todo-container'>
+          <TodoList title='To do' type='todo' list={todo} />
+          <TodoList title='In progress' type='progress' list={progress} />
+          <TodoList title='Completed' type='completed' list={completed} />
+
+          <TodoDetailed />
+        </div>
+      </DragDropContext>
     </div>
   );
 };
+
 export default Projects;

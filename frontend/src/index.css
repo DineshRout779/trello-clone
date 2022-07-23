@@ -295,6 +295,13 @@ img {
   border: 2px solid #ddd;
 }
 
+.login-form .line {
+  max-width: 360px;
+  margin: 0 auto;
+  height: 2px;
+  background-color: rgba(64, 145, 223, 0.12);
+}
+
 .login-form a {
   font-size: 24px;
   color: #1a3b5854;
@@ -315,6 +322,11 @@ img {
   width: 17px;
   height: 2px;
   background-color: #333;
+}
+
+.login-form .form {
+  max-width: 360px;
+  margin: 0 auto;
 }
 
 /* height */

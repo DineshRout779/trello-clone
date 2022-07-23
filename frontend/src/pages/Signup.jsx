@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../features/user/userActions';
+import { resetError } from '../features/user/userSlice';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -26,7 +27,7 @@ const Signup = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-
+    dispatch(resetError());
     if (user.email && user.fullName && user.password) {
       dispatch(signUp(user));
     }
@@ -42,11 +43,14 @@ const Signup = () => {
         email: '',
         password: '',
       });
-      navigate('/login');
-    }
 
-    if (success && userInfo && user.remember) navigate('/dashboard');
-  }, [navigate, userInfo, success, user.remember]);
+      if (JSON.parse(localStorage.getItem('user'))) {
+        navigate('/dashboard');
+      } else {
+        navigate('/login');
+      }
+    }
+  }, [navigate, userInfo, success]);
 
   return (
     <div className='full-height flex-center'>

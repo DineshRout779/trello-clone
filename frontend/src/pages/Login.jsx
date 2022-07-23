@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { resetError } from '../features/user/userSlice';
 import { login } from '../features/user/userActions';
 
 const Login = () => {
@@ -9,9 +10,7 @@ const Login = () => {
     password: '',
     remember: false,
   });
-  const { loading, error, success, userInfo } = useSelector(
-    (state) => state.user
-  );
+  const { loading, error, userInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -25,24 +24,22 @@ const Login = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    dispatch(resetError());
 
     if (user.email && user.password) {
       dispatch(login(user));
+      setUser({
+        ...user,
+        email: '',
+        password: '',
+      });
     }
   };
 
   useEffect(() => {
     // redirect straight to dashboard if user exists!
     if (userInfo) navigate('/dashboard');
-
-    if (success) {
-      setUser({
-        email: '',
-        password: '',
-      });
-      navigate('/dashboard');
-    }
-  }, [navigate, userInfo, success, user.remember]);
+  }, [navigate, userInfo]);
 
   return (
     <div className='full-height flex-center'>
@@ -73,6 +70,10 @@ const Login = () => {
             <p>We need your Name & Email </p>
           </div>
 
+          <div className='mt-1' style={{ color: 'red', textAlign: 'center' }}>
+            {error}
+          </div>
+
           <form className='form' onSubmit={submitForm}>
             <input
               type='email'
@@ -94,7 +95,7 @@ const Login = () => {
             />
 
             <button type='submit' className='form-control btn btn-submit'>
-              Log In
+              {loading ? 'Logging in...' : 'Log In'}
             </button>
 
             <input

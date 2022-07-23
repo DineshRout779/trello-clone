@@ -1,9 +1,9 @@
 const {
   getTodoById,
-  getALlTodos,
   getTodo,
   createTodo,
   updateTodo,
+  getAllTodos,
 } = require('../controllers/todo');
 const { getUserById } = require('../controllers/user');
 
@@ -14,15 +14,15 @@ router.param('todoId', getTodoById);
 router.param('userId', getUserById);
 
 // get all todos
-router.get('/', getALlTodos);
+router.get('/', getAllTodos);
 
 //get a todo
 router.get('/:todoId', getTodo);
 
 // create a todo
-router.post('/', createTodo);
+router.post('/:userId', createTodo);
 
 // update a todo
-router.put('/:todoId', updateTodo);
+router.put('/:todoId/:userId', updateTodo);
 
 module.exports = router;

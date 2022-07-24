@@ -58,6 +58,7 @@ const AddTodoForm = ({ type, setShowForm }) => {
           src='./images/form-user.png'
           alt=''
           style={{ maxWidth: '40px', height: '40px', borderRadius: '50%' }}
+          title={userInfo.fullName}
         />
         <button
           className='btn'

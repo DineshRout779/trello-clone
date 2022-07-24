@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../features/user/userActions';
-import { resetError } from '../features/user/userSlice';
+import { resetError, setError } from '../features/user/userSlice';
+import { isValidEmail } from '../helpers/emailValidation';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -28,7 +29,29 @@ const Signup = () => {
   const submitForm = (e) => {
     e.preventDefault();
     dispatch(resetError());
-    if (user.email && user.fullName && user.password) {
+
+    if (!user.email) {
+      dispatch(setError('Please provide name'));
+    }
+
+    if (!user.email) {
+      dispatch(setError('Please provide an email'));
+    }
+
+    if (!user.password) {
+      dispatch(setError('Please provide a password'));
+    }
+
+    if (!isValidEmail(user.email)) {
+      dispatch(setError('Please provide an valid email'));
+    }
+
+    if (
+      user.email &&
+      isValidEmail(user.email) &&
+      user.fullName &&
+      user.password
+    ) {
       dispatch(signUp(user));
     }
   };
@@ -51,6 +74,11 @@ const Signup = () => {
       }
     }
   }, [navigate, userInfo, success]);
+
+  useEffect(() => {
+    dispatch(resetError());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='full-height flex-center'>

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { resetError } from '../features/user/userSlice';
+import { resetError, setError } from '../features/user/userSlice';
 import { login } from '../features/user/userActions';
+import { isValidEmail } from '../helpers/emailValidation';
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -10,6 +11,8 @@ const Login = () => {
     password: '',
     remember: false,
   });
+  const emailRef = useRef();
+  const passwordRef = useRef();
   const { loading, error, userInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -26,13 +29,20 @@ const Login = () => {
     e.preventDefault();
     dispatch(resetError());
 
-    if (user.email && user.password) {
+    if (!user.email) {
+      dispatch(setError('Please provide an email'));
+    }
+
+    if (!user.password) {
+      dispatch(setError('Please provide a password'));
+    }
+
+    if (!isValidEmail(user.email)) {
+      dispatch(setError('Please provide an valid email'));
+    }
+
+    if (user.email && isValidEmail(user.email) && user.password) {
       dispatch(login(user));
-      setUser({
-        ...user,
-        email: '',
-        password: '',
-      });
     }
   };
 
@@ -40,6 +50,11 @@ const Login = () => {
     // redirect straight to dashboard if user exists!
     if (userInfo) navigate('/dashboard');
   }, [navigate, userInfo]);
+
+  useEffect(() => {
+    dispatch(resetError());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='full-height flex-center'>
@@ -70,10 +85,6 @@ const Login = () => {
             <p>We need your Name & Email </p>
           </div>
 
-          <div className='mt-1' style={{ color: 'red', textAlign: 'center' }}>
-            {error}
-          </div>
-
           <form className='form' onSubmit={submitForm}>
             <input
               type='email'
@@ -93,6 +104,10 @@ const Login = () => {
               onChange={handleInputChange}
               placeholder='Password'
             />
+
+            <div className='mt-1' style={{ color: 'red', textAlign: 'center' }}>
+              {error}
+            </div>
 
             <button type='submit' className='form-control btn btn-submit'>
               {loading ? 'Logging in...' : 'Log In'}

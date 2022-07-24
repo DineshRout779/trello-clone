@@ -24,6 +24,9 @@ const userSlice = createSlice({
     resetSuccess: (state) => {
       state.success = false;
     },
+    setError: (state, { payload }) => {
+      state.error = payload;
+    },
   },
   extraReducers: {
     //signup
@@ -57,6 +60,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout, resetError, resetSuccess } = userSlice.actions;
+export const { logout, resetError, setError, resetSuccess } = userSlice.actions;
 
 export default userSlice.reducer;

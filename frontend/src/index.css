@@ -205,11 +205,6 @@ img {
   padding: 0.5em;
 }
 
-.todo-form .form-control {
-  /* border: none;
-  outline: none; */
-}
-
 .todo-form .textarea {
   resize: vertical;
 }
@@ -229,7 +224,7 @@ img {
   height: 100%;
   background-color: #fff;
   box-shadow: -4px 6px 17px rgba(216, 216, 216, 0.59);
-  transition: right 0.3s ease-in;
+  transition: right 0.5s ease-in;
 }
 
 .todo-update-container h2 {
@@ -251,6 +246,19 @@ img {
   right: 0;
 }
 
+.todo-update-container img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 1em;
+}
+
+.todo-update-container p {
+  min-width: 100px;
+  flex: 0.4;
+  color: #888;
+}
+
 /* todo */
 
 .todo {
@@ -259,6 +267,12 @@ img {
   margin: 1em 0;
   border-radius: 7px;
   box-shadow: 0px 0px 28px rgba(72, 174, 174, 0.07);
+  transition: transform 0.1s ease-in;
+}
+
+.todo.onDrag {
+  transform-origin: 100% 0%;
+  transform: rotate(-12.46deg);
 }
 
 .todo-title {
@@ -293,12 +307,20 @@ img {
   margin-top: 1em;
 }
 
-.mt-2 {
-  margin-top: 2em;
-}
-
 .mb-1 {
   margin-bottom: 1em;
+}
+
+.ml-1 {
+  margin-left: 1em;
+}
+
+.mr-1 {
+  margin-right: 1em;
+}
+
+.mt-2 {
+  margin-top: 2em;
 }
 
 .mb-2 {

@@ -3,14 +3,14 @@ import { showTodo } from '../features/todo/todoSlice';
 import { Draggable } from 'react-beautiful-dnd';
 
 const Todo = ({ todo, index }) => {
-  // const { showDetailed } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
+
   return (
     <Draggable draggableId={todo._id.toString()} index={index}>
-      {(provided) => {
+      {(provided, snapshot) => {
         return (
           <div
-            className='todo'
+            className={`todo ${snapshot.isDragging ? 'onDrag' : ''}`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}

@@ -11,12 +11,22 @@ This is a simple todo app where one can manage one's task.
 
  - Frontend
    - React
+   - redux-toolkit
    - React-beautiful-dnd
  - Backend
 	 - nodejs
 	 - express
 	 - mongodb
 	 - jsonwebtoken
+	 
+### Features
+ - Authentication
+ - Form Validations
+ - Drag and drop
+ - create todo 
+ - update todo
+ - change todo status
+ 
 
 
 ## Installation / use

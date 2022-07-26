@@ -20,7 +20,8 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(fetchAllTodos());
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;

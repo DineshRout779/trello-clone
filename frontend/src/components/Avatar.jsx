@@ -7,7 +7,7 @@ const Avatar = () => {
   return (
     <div className='flex items-center avatar'>
       <p>Hi {name ? name : 'User'}</p>
-      <img src='./images/avatar-6.png' alt='profile' className='avatar-img' />
+      <img src='/images/avatar-6.png' alt='profile' className='avatar-img' />
     </div>
   );
 };

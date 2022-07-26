@@ -24,7 +24,7 @@ const Todo = ({ todo, index }) => {
             <p className='todo-desc'>{todo.description}</p>
 
             <div className='todo-img mt-1'>
-              <img src='./images/avatar-1.png' alt='' />
+              <img src='/images/avatar-1.png' alt='' />
             </div>
           </div>
         );

@@ -11,6 +11,6 @@ router.param('userId', getUserById);
 router.get('/:userId', getUser);
 
 // get all users
-router.get('/:userId', getAllUsers);
+router.get('/', getAllUsers);
 
 module.exports = router;

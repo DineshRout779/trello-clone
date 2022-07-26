@@ -70,16 +70,63 @@ img {
 .modal {
   border-radius: 22px;
   background-color: #fff;
-  padding: 1em;
+  padding: 2em;
   width: 90%;
   max-width: 480px;
   margin: 0 auto;
+}
+
+.modal ul {
+  margin: 2em 0;
+  max-height: 50vh;
+  overflow-y: scroll;
+}
+
+/* width */
+.modal ul::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+.modal ul::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* Handle */
+.modal ul::-webkit-scrollbar-thumb {
+  background: #1e89c7;
+}
+
+/* Handle on hover */
+.modal ul::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.modal li {
+  margin: 1em 0;
+}
+
+.modal img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 1em;
+}
+
+.modal h3 {
+  font-weight: 500;
+}
+
+.modal p {
+  font-size: 12px;
+  color: gray;
 }
 
 .modal-title {
   position: relative;
   padding-bottom: 5px;
   font-size: 18px;
+  font-weight: 500;
 }
 
 .modal-title::after {
